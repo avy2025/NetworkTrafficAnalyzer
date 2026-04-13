@@ -1,0 +1,13 @@
+# Python Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# App Logs & User Data
+logs/*.csv
+data/
+
+# Environments
+.env
+venv/
+env/

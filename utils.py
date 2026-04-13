@@ -5,14 +5,17 @@ import time
 from datetime import datetime
 
 class CSVLogger:
+    """
+    Handles persistent telemetry logging with thread-safe file operations and automatic log rotation.
+    """
     def __init__(self, log_dir="logs", max_bytes=5 * 1024 * 1024, buffer_size=10):
         """
-        Engine for maintaining persistent telemetry. Features isolated threading locks and automatic file log rotation.
+        Initializes the CSV logger.
         
         Args:
-            log_dir (str): Relative root to save CSV files.
-            max_bytes (int): Trigger limit size defining when to archive and overwrite (5MB Default).
-            buffer_size (int): IO Memory threshold. Stores entries up till bounds restricting heavy storage interactions.
+            log_dir (str): Directory where CSV logs will be stored.
+            max_bytes (int): Maximum size of a log file before rotation (default 5MB).
+            buffer_size (int): Number of entries to buffer before flushing to disk.
         """
         self.log_dir = log_dir
         self.max_bytes = max_bytes
@@ -30,19 +33,18 @@ class CSVLogger:
         self.net_lock = threading.Lock()
         self.ano_lock = threading.Lock()
         
-        # Hydrate Headers internally resolving blank environments
         self._ensure_header(self.network_log_path, ["timestamp", "datetime", "upload_kbps", "download_kbps"])
         self._ensure_header(self.anomaly_log_path, ["timestamp", "datetime", "type", "description", "severity"])
 
     def _ensure_header(self, filepath, headers):
-        """Privatized method resolving CSV configuration dependencies"""
+        """Ensures the CSV file exists and contains the specified headers."""
         if not os.path.exists(filepath) or os.path.getsize(filepath) == 0:
             with open(filepath, "w", newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow(headers)
 
     def _rotate_if_needed(self, filepath, headers):
-        """Triggers local file system archiving retaining older CSV telemetry while flushing buffers to 0MB."""
+        """Rotates the log file if it exceeds the maximum byte size."""
         if os.path.exists(filepath) and os.path.getsize(filepath) >= self.max_bytes:
             base, ext = os.path.splitext(filepath)
             rotation_name = f"{base}_{int(time.time())}{ext}"
@@ -50,7 +52,13 @@ class CSVLogger:
             self._ensure_header(filepath, headers)
 
     def log_network(self, upload_kbps, download_kbps):
-        """Queues pure Bandwidth throughput securely in cross-platform memory."""
+        """
+        Logs network throughput metrics.
+        
+        Args:
+            upload_kbps (float): Current upload speed in KB/s.
+            download_kbps (float): Current download speed in KB/s.
+        """
         now = time.time()
         dt_str = datetime.fromtimestamp(now).strftime("%Y-%m-%d %H:%M:%S")
         
@@ -60,7 +68,14 @@ class CSVLogger:
                 self._flush_network()
 
     def log_anomaly(self, anomaly_type, description, severity="High"):
-        """Triggers an instantaneous hard-disk flush guaranteeing critical Event payloads are persisted without buffer delays!"""
+        """
+        Logs a detected security anomaly.
+        
+        Args:
+            anomaly_type (str): The category of the anomaly.
+            description (str): Detailed description of the event.
+            severity (str): The severity level (Low, Medium, High, Critical).
+        """
         now = time.time()
         dt_str = datetime.fromtimestamp(now).strftime("%Y-%m-%d %H:%M:%S")
         
@@ -69,7 +84,7 @@ class CSVLogger:
             self._flush_anomaly()
 
     def _flush_network(self):
-        """Protected method dropping mapped Network variables mechanically into the root CSV."""
+        """Flushes buffered network logs to the CSV file."""
         if not self.network_buffer:
             return
             
@@ -82,7 +97,7 @@ class CSVLogger:
         self.network_buffer.clear()
 
     def _flush_anomaly(self):
-        """Protected method dropping mapped Incident variables mechanically into the root CSV."""
+        """Flushes buffered anomaly logs to the CSV file."""
         if not self.anomaly_buffer:
             return
             
@@ -95,7 +110,7 @@ class CSVLogger:
         self.anomaly_buffer.clear()
         
     def get_network_log_content(self):
-        """Frontend integration interface converting file system targets into pure strings ready for st.download() APIs"""
+        """Returns the entire content of the network log as a string."""
         self._flush_network()
         if os.path.exists(self.network_log_path):
             with open(self.network_log_path, "r") as f:
@@ -103,7 +118,7 @@ class CSVLogger:
         return ""
         
     def get_anomaly_log_content(self):
-        """Frontend integration interface dumping Incident payloads directly"""
+        """Returns the entire content of the anomaly log as a string."""
         self._flush_anomaly()
         if os.path.exists(self.anomaly_log_path):
             with open(self.anomaly_log_path, "r") as f:
