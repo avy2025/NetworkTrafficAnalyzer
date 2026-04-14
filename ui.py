@@ -13,104 +13,103 @@ from utils import CSVLogger
 # ----------------- Premium CSS Injection -----------------
 CSS = """
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
     /* Global Styles */
     html, body, [data-testid="stAppViewContainer"] {
         font-family: 'Inter', sans-serif;
-        background-color: #0e1117;
-        color: #fafafa;
+        line-height: 1.6;
+        background-color: #0f172a;
+        color: #f8fafc;
     }
 
     [data-testid="stHeader"] {
-        background: rgba(14, 17, 23, 0.8);
-        backdrop-filter: blur(10px);
+        background-color: #0f172a;
     }
 
     /* Sidebar styling */
     section[data-testid="stSidebar"] {
-        background-color: #0b0d12 !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.05);
+        background-color: #0f172a !important;
     }
 
     /* Dashboard Cards */
     .dashboard-card {
-        background: rgba(255, 255, 255, 0.02);
+        background-color: #1e293b;
         border-radius: 12px;
-        padding: 24px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        margin-bottom: 20px;
+        padding: 32px;
+        border: 1px solid #334155;
+        margin-bottom: 32px; /* Consistent vertical rhythm */
     }
 
     /* Titles and Headers */
     .main-title {
-        font-family: 'Outfit', sans-serif;
+        font-family: 'Inter', sans-serif;
         font-weight: 700;
         font-size: 2.8rem;
-        background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 0.5rem;
+        line-height: 1.2;
+        color: #3b82f6;
+        margin-bottom: 1rem;
     }
 
     .sub-title {
         font-family: 'Inter', sans-serif;
-        font-size: 1rem;
-        color: #888;
-        margin-bottom: 2rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #64748b;
+        margin-bottom: 3rem;
     }
 
     .section-header {
-        font-family: 'Outfit', sans-serif;
+        font-family: 'Inter', sans-serif;
         font-weight: 600;
-        font-size: 1.4rem;
-        margin-bottom: 1rem;
-        color: #fafafa;
+        font-size: 1.5rem;
+        line-height: 1.4;
+        margin-bottom: 1.5rem;
+        color: #f8fafc;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
     }
 
     /* Metrics Styling */
     [data-testid="stMetricValue"] {
-        font-family: 'Outfit', sans-serif;
+        font-family: 'Inter', sans-serif;
         font-weight: 700;
-        color: #00f2fe !important;
+        color: #3b82f6 !important;
     }
 
     /* Alert Dashboard */
     .alert-container {
-        height: 420px;
+        height: 440px;
         overflow-y: auto;
-        padding: 5px;
+        padding: 4px;
         background-color: transparent;
     }
 
     .alert-card {
-        background: rgba(255, 255, 255, 0.03);
+        background-color: #1e293b;
         border-radius: 8px;
-        padding: 12px;
-        margin-bottom: 10px;
-        border-left: 4px solid #ff4b4b;
-        transition: transform 0.2s ease;
+        padding: 16px;
+        margin-bottom: 16px;
+        border: 1px solid #334155;
+        border-left: 4px solid #ef4444;
+        line-height: 1.5;
     }
 
     .alert-card:hover {
-        transform: translateX(5px);
-        background: rgba(255, 255, 255, 0.05);
+        background-color: #334155;
     }
 
-    .severity-high { border-left-color: #ff4b4b; }
-    .severity-critical { border-left-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.1); }
-    .severity-medium { border-left-color: #ffa500; }
-    .severity-low { border-left-color: #ffff00; }
+    .severity-high { border-left-color: #ef4444; }
+    .severity-critical { border-left-color: #dc2626; box-shadow: none; }
+    .severity-medium { border-left-color: #f59e0b; }
+    .severity-low { border-left-color: #10b981; }
 
     .alert-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
     }
 
     .alert-type {
@@ -121,21 +120,21 @@ CSS = """
     }
 
     .alert-time {
-        font-size: 0.75rem;
-        color: #888;
+        font-size: 0.8rem;
+        color: #64748b;
     }
 
     .alert-desc {
-        font-size: 0.85rem;
-        color: #ddd;
-        line-height: 1.4;
+        font-size: 0.9rem;
+        color: #cbd5e1;
+        line-height: 1.6;
     }
 
     /* Scrollbar */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: #0e1117; }
-    ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #444; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
     /* Hide standard streamlit elements */
     #MainMenu {visibility: hidden;}
@@ -162,7 +161,7 @@ def run_ui():
     Manages the live metrics update loop and user interactions.
     """
     st.set_page_config(
-        page_title="Network Sentinel | Advanced Analyzer",
+        page_title="Network Tracker",
         page_icon="📡",
         layout="wide",
         initial_sidebar_state="expanded"
@@ -174,19 +173,19 @@ def run_ui():
     
     # ---------------- Sidebar Configuration ----------------
     with st.sidebar:
-        st.markdown("<h2 style='font-family:Outfit; font-weight:700;'>⚙️ Control Center</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='font-family:Outfit; font-weight:700;'>Dashboard Settings</h2>", unsafe_allow_html=True)
         
-        is_running = st.checkbox("Active Monitoring Thread", value=True)
+        is_running = st.checkbox("Track network traffic", value=True)
         if is_running:
             if sniffer.thread is None or not sniffer.thread.is_alive():
                 sniffer.start()
-            st.success("System Live", icon="🟢")
+            st.success("Monitoring is active", icon="🟢")
         else:
             sniffer.stop()
-            st.warning("Systems Paused", icon="🟡")
+            st.warning("Monitoring is paused", icon="🟡")
             
         st.markdown("---")
-        st.markdown("### 📥 Telemetry Export")
+        st.markdown("### Export data")
         
         net_log_data = logger.get_network_log_content()
         st.download_button(
@@ -207,44 +206,39 @@ def run_ui():
         )
 
         st.markdown("---")
-        st.info("Network Sentinel v2.0 - Advanced Traffic Intelligence Dashboard")
+        st.info("Network Tracker - A tool to watch your network traffic.")
 
     if not is_running:
         st.markdown("<div class='dashboard-card'>", unsafe_allow_html=True)
-        st.title("🛡️ Network Sentinel")
-        st.error("Monitoring is currently offline. Please toggle the 'Active Monitoring Thread' in the control panel to resume data ingestion.")
+        st.title("Network Tracker")
+        st.error("Tracking is currently off. Please check the 'Track network traffic' box in the settings to start.")
         st.markdown("</div>", unsafe_allow_html=True)
         return
 
     # ---------------- Header ----------------
-    st.markdown("<div class='main-title'>📡 Network Sentinel</div>", unsafe_allow_html=True)
-    st.markdown("<div class='sub-title'>Precision Traffic Intelligence & Real-Time Anomaly Detection Engine</div>", unsafe_allow_html=True)
+    st.markdown("<div class='main-title'>Network Tracker</div>", unsafe_allow_html=True)
+    st.markdown("<div class='sub-title'>See what's happening on your network in real-time.</div>", unsafe_allow_html=True)
 
     # ---------------- Phase 2: Live Metrics ----------------
     stats = monitor.get_realtime_stats()
     up_kbps = stats["upload_speed_bps"] / 1024
     down_kbps = stats["download_speed_bps"] / 1024
     logger.log_network(up_kbps, down_kbps)
+    
+    insights = analyzer.extract_insights()
 
-    # Manage Peak Speeds
-    if "peak_up" not in st.session_state:
-        st.session_state.peak_up = 0.0
-    if "peak_down" not in st.session_state:
-        st.session_state.peak_down = 0.0
-        
-    st.session_state.peak_up = max(st.session_state.peak_up, up_kbps)
-    st.session_state.peak_down = max(st.session_state.peak_down, down_kbps)
-
+    # System Status Counters
+    st.markdown("<div class='section-header'>Live System Status</div>", unsafe_allow_html=True)
     m_col1, m_col2, m_col3, m_col4 = st.columns(4)
     
     with m_col1:
-        st.metric("Upload Speed", f"{up_kbps:.1f} KB/s", delta=f"{up_kbps - st.session_state.peak_up:.1f} (Peak)")
+        st.metric("Upload Speed", f"{up_kbps:.1f} KB/s")
     with m_col2:
-        st.metric("Download Speed", f"{down_kbps:.1f} KB/s", delta=f"{down_kbps - st.session_state.peak_down:.1f} (Peak)")
+        st.metric("Download Speed", f"{down_kbps:.1f} KB/s")
     with m_col3:
-        st.metric("Peak Upload", f"{st.session_state.peak_up:.1f} KB/s")
+        st.metric("Packets Analyzed", f"{insights['total_packets']:,}")
     with m_col4:
-        st.metric("Peak Download", f"{st.session_state.peak_down:.1f} KB/s")
+        st.metric("Anomalies Found", f"{len(insights['anomalies'])}")
 
     st.markdown("---")
 
@@ -252,7 +246,7 @@ def run_ui():
     row1_col1, row1_col2 = st.columns([2, 1])
 
     with row1_col1:
-        st.markdown("<div class='section-header'>📊 Bandwidth Throughput Analysis</div>", unsafe_allow_html=True)
+        st.markdown("<div class='section-header'>Internet Usage</div>", unsafe_allow_html=True)
         
         # Bandwidth History Management
         if "history_df" not in st.session_state:
@@ -272,14 +266,14 @@ def run_ui():
         fig.add_trace(go.Scatter(
             x=df["Time"], y=df["Download"],
             name="Download", fill='tozeroy',
-            line=dict(color='#4facfe', width=2),
-            fillcolor='rgba(79, 172, 254, 0.2)'
+            line=dict(color='#3b82f6', width=2),
+            fillcolor='rgba(59, 130, 246, 0.2)'
         ))
         fig.add_trace(go.Scatter(
             x=df["Time"], y=df["Upload"],
             name="Upload", fill='tozeroy',
-            line=dict(color='#00f2fe', width=2),
-            fillcolor='rgba(0, 242, 254, 0.2)'
+            line=dict(color='#60a5fa', width=2),
+            fillcolor='rgba(96, 165, 250, 0.1)'
         ))
         fig.update_layout(
             paper_bgcolor='rgba(0,0,0,0)',
@@ -294,7 +288,7 @@ def run_ui():
         st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
     with row1_col2:
-        st.markdown("<div class='section-header'>🛡️ Intelligence Incident Log</div>", unsafe_allow_html=True)
+        st.markdown("<div class='section-header'>Recent Alerts</div>", unsafe_allow_html=True)
         insights = analyzer.extract_insights()
         
         if insights["anomalies"]:
@@ -317,8 +311,8 @@ def run_ui():
             st.markdown(
                 "<div class='alert-container' style='display:flex; align-items:center; justify-content:center; flex-direction:column; color:#888;'>"
                 "<div style='font-size:3rem; margin-bottom:10px;'>📡</div>"
-                "<div>Listening for Traffic Irregularities...</div>"
-                "<div style='font-size:0.8rem; margin-top:5px; opacity:0.6;'>Monitoring patterns for spikes and floods</div>"
+                "<div>Waiting for unusual traffic activity...</div>"
+                "<div style='font-size:0.8rem; margin-top:5px; opacity:0.6;'>I'll let you know if I see any sudden spikes or floods</div>"
                 "</div>", 
                 unsafe_allow_html=True
             )
@@ -327,7 +321,7 @@ def run_ui():
     row2_col1, row2_col2 = st.columns([3, 2])
 
     with row2_col1:
-        st.markdown("<div class='section-header'>🚀 High-Activity Process Map</div>", unsafe_allow_html=True)
+        st.markdown("<div class='section-header'>Apps using the internet</div>", unsafe_allow_html=True)
         process_stats = monitor.get_process_network_usage()
         if process_stats:
             proc_df = pd.DataFrame([{
@@ -338,15 +332,15 @@ def run_ui():
             } for p in process_stats])
             st.dataframe(proc_df, use_container_width=True, hide_index=True)
         else:
-            st.info("Aggregating process I/O bindings...")
+            st.info("Getting list of active apps...")
 
     with row2_col2:
-        st.markdown("<div class='section-header'>🌐 Protocol Extraction Ratio</div>", unsafe_allow_html=True)
+        st.markdown("<div class='section-header'>Types of connection</div>", unsafe_allow_html=True)
         if insights["top_protocols"]:
             proto_df = pd.DataFrame(insights["top_protocols"])
             fig_pie = px.pie(
                 proto_df, values='bytes', names='protocol',
-                color_discrete_sequence=px.colors.sequential.Cyan_r,
+                color_discrete_sequence=['#3b82f6', '#60a5fa', '#93c5fd', '#2563eb', '#1d4ed8'],
                 hole=0.4
             )
             fig_pie.update_layout(
@@ -359,15 +353,15 @@ def run_ui():
             )
             st.plotly_chart(fig_pie, use_container_width=True, config={'displayModeBar': False})
         else:
-            st.warning("Sampling packet stream for protocol classification...")
+            st.warning("Looking at traffic types...")
 
     # ---------------- Row 3: Target Intelligence ----------------
-    st.markdown("<div class='section-header'>📍 Top Traffic Destination Nodes (IP)</div>", unsafe_allow_html=True)
+    st.markdown("<div class='section-header'>Most frequent destinations</div>", unsafe_allow_html=True)
     if insights["top_ips"]:
-        ip_df = pd.DataFrame([{"Node IP Address": x["ip"], "Bytes Intercepted": x["bytes"], "Percentage": f"{(x['bytes']/sum(i['bytes'] for i in insights['top_ips'])*100):.1f}%"} for x in insights["top_ips"]])
+        ip_df = pd.DataFrame([{"Destination IP": x["ip"], "Data sent/received": x["bytes"], "Percentage": f"{(x['bytes']/sum(i['bytes'] for i in insights['top_ips'])*100):.1f}%"} for x in insights["top_ips"]])
         st.dataframe(ip_df, use_container_width=True, hide_index=True)
     else:
-        st.info("Indexing IP frequency tables...")
+        st.info("Identifying where data is going...")
 
     # Cycle wait & reload
     time.sleep(1)
