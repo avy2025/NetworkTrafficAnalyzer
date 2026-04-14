@@ -17,6 +17,7 @@ class TrafficAnalyzer:
         self.protocol_counts = defaultdict(int)  
         self.traffic_history = []  
         self.anomalies = []        
+        self.total_packets = 0    
         
         self.rolling_window_sec = 10 
         self.anomaly_multiplier = 4.0 
@@ -51,6 +52,7 @@ class TrafficAnalyzer:
                 window_ip_packets[src] += 1
                 
                 interval_bytes += size
+                self.total_packets += 1
             except queue.Empty:
                 break
                 
@@ -98,7 +100,8 @@ class TrafficAnalyzer:
         return {
             "top_ips": top_ips,
             "top_protocols": top_protos,
-            "anomalies": self.anomalies
+            "anomalies": self.anomalies,
+            "total_packets": self.total_packets
         }
 
     def _add_anomaly(self, atype, desc, severity):
